@@ -2,6 +2,16 @@
 
 {% block content %}
 
-<h1>Hello, World!!</h1>
+<pre>
+    <code class="line-numbers language-python">
+    import random
+
+    def random_action():
+        actions = ['jump', 'run', 'swim', 'fly', 'dance']
+        return random.choice(actions)
+
+    print(random_action())
+    </code>
+</pre>
 
 {% endblock %}
