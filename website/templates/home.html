@@ -2,34 +2,50 @@
 
 {% block content %}
 
+{% if code%}
 <pre>
-    <code class="line-numbers language-python">
-    import random
+    <code class="line-numbers language-{{lang}}">
+    {{code}}
 
-    def random_action():
-        actions = ['jump', 'run', 'swim', 'fly', 'dance']
-        return random.choice(actions)
-
-    print(random_action())
     </code>
 </pre>
 <br /><br />
+<form method="POST" action="{% url 'home' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <textarea class="form-control" name="code" rows="3" placeholder="Have A.I. Fix Your Code!">{{code}}</textarea>
+    </div>
+    <select class="form-select" name="lang">
+        <option selected>Select Programming Language</option>
+            {% for lang in lang_list %}
+                <option value="{{lang}}">{{lang}}</option>
+            {% endfor %}
+        </select>
+    <br />
+    <button type="submit" class="btn btn-secondary">Submit</button>
+</form>
 
+{% else %}
+<pre>
+    <code class="line-numbers language-python">
+    def hello_world():
+        print("Hello, World!")
+    </code>
+</pre>
+<br /><br />
 <form method="POST" action="{% url 'home' %}">
     {% csrf_token %}
     <div class="mb-3">
         <textarea class="form-control" name="code" rows="3" placeholder="Have A.I. Fix Your Code!"></textarea>
     </div>
-
-    <select class="form-select" aria-label="Default select example">
+    <select class="form-select" name="lang">
         <option selected>Select Programming Language</option>
-        {% for lang in lang_list %}
-            <option value="{{lang}}">{{lang}}</option>
-        {% endfor %}
-      </select>
-
+            {% for lang in lang_list %}
+                <option value="{{lang}}">{{lang}}</option>
+            {% endfor %}
+        </select>
     <br />
-
     <button type="submit" class="btn btn-secondary">Submit</button>
 </form>
+{% endif %}
 {% endblock %}
