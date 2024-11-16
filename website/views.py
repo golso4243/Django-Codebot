@@ -15,19 +15,36 @@ load_dotenv(BASE_DIR / '.env')
 
 
 def home(request):
+    """
+    Handles the home page for both GET and POST requests.
+    - GET: Renders the initial form with no data.
+    - POST: Processes the code and programming language input,
+            sends the code to the OpenAI API for fixing, and
+            returns the response to the user.
+    """
+
+    # Language list for the dropdown
     lang_list = ['c', 'clike', 'cpp', 'csharp', 'css', 'dart', 'django', 'go', 'html', 'java', 'javascript', 'lua', 'markup', 'markup-templating',
                  'matlab', 'mongodb', 'objectivec', 'perl', 'php', 'powershell', 'python', 'r', 'regex', 'ruby', 'rust', 'sass', 'scala', 'sql', 'swift', 'yaml']
 
+    # If the request method is POST
     if request.method == "POST":
+
+        # Get the code and language from the form
         code = request.POST['code']
         lang = request.POST['lang']
 
+        # If the language is not selected
         if lang == 'Select Programming Language':
+            # Display a warning message
             messages.warning(request, 'Please select a language')
             return render(request, 'home.html', {'lang_list': lang_list, 'code': code, 'lang': lang})
+        # If the language is selected
         else:
+            # Create an OpenAI client with the API key
             client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
             try:
+                # Send the code to the OpenAI API for fixing
                 response = client.chat.completions.create(
                     model="gpt-4",
                     messages=[
@@ -37,10 +54,13 @@ def home(request):
                         }
                     ],
                 )
+                # Return the response to the user
                 return render(request, 'home.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
+            # Exception handling
             except Exception as e:
                 return render(request, 'home.html', {'lang_list': lang_list, 'code': e, 'lang': lang})
 
+    # If the request method is GET
     return render(request, 'home.html', {'lang_list': lang_list})
 
 
@@ -48,19 +68,36 @@ def home(request):
 
 
 def suggest(request):
+    """
+    Handles the suggest page for both GET and POST requests.
+    - GET: Renders the initial form with no data.
+    - POST: Processes the code input and language, sends it
+            to the OpenAI API for suggestions, and displays
+            the generated recommendations to the user.
+    """
+
+    # language list for the dropdown
     lang_list = ['c', 'clike', 'cpp', 'csharp', 'css', 'dart', 'django', 'go', 'html', 'java', 'javascript', 'lua', 'markup', 'markup-templating',
                  'matlab', 'mongodb', 'objectivec', 'perl', 'php', 'powershell', 'python', 'r', 'regex', 'ruby', 'rust', 'sass', 'scala', 'sql', 'swift', 'yaml']
 
+    # if request method is POST
     if request.method == "POST":
+
+        # get code and language from the form
         code = request.POST['code']
         lang = request.POST['lang']
 
+        # if language is not selected
         if lang == 'Select Programming Language':
+            # display a warning message
             messages.warning(request, 'Please select a language')
             return render(request, 'suggest.html', {'lang_list': lang_list, 'code': code, 'lang': lang})
+        # if language is selected
         else:
+            # create an OpenAI client with the API key
             client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
             try:
+                # send the code to the OpenAI API for suggestions
                 response = client.chat.completions.create(
                     model="gpt-4",
                     messages=[
@@ -70,8 +107,11 @@ def suggest(request):
                         }
                     ],
                 )
+                # return the response to the user
                 return render(request, 'suggest.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
+            # exception handling
             except Exception as e:
                 return render(request, 'suggest.html', {'lang_list': lang_list, 'code': e, 'lang': lang})
 
+    # if request method is GET
     return render(request, 'suggest.html', {'lang_list': lang_list})

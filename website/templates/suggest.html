@@ -2,19 +2,25 @@
 
 {% block content %}
 
+<!-- Check if there is a response to display -->
 {% if response %}
 <pre>
+    <!-- Display the response with syntax highlighting -->
     <code class="line-numbers language-{{lang}}">
     {{ response }}
 
     </code>
 </pre>
 <br /><br />
+
+<!-- Form for submitting Suggestion -->
 <form method="POST" action="{% url 'suggest' %}">
     {% csrf_token %}
     <div class="mb-3">
+        <!-- TextArea for Code Prompt -->
         <textarea class="form-control" name="code" rows="3" placeholder="Have A.I. Suggest Code!">{{code}}</textarea>
     </div>
+    <!-- Dropdown menu for selecting programming language -->
     <select class="form-select" name="lang">
         <option selected>Select Programming Language</option>
             {% for lang in lang_list %}
@@ -22,22 +28,29 @@
             {% endfor %}
         </select>
     <br />
+    <!-- Submit button for the form -->
     <button type="submit" class="btn btn-secondary">Submit</button>
 </form>
 
+<!-- Default view when no response is present -->
 {% else %}
 <pre>
+    <!-- Display sample Python code -->
     <code class="line-numbers language-python">
     def hello_world():
         print("Hello, World!")
     </code>
 </pre>
 <br /><br />
+
+<!-- Form for submitting Suggestion -->
 <form method="POST" action="{% url 'suggest' %}">
     {% csrf_token %}
     <div class="mb-3">
+        <!-- TextArea for Code Suggestion Prompt -->
         <textarea class="form-control" name="code" rows="3" placeholder="Have A.I. Suggest Code!"></textarea>
     </div>
+    <!-- Dropdown menu for selecting programming language -->
     <select class="form-select" name="lang">
         <option selected>Select Programming Language</option>
             {% for lang in lang_list %}
@@ -45,6 +58,7 @@
             {% endfor %}
         </select>
     <br />
+    <!-- Submit button for the form -->
     <button type="submit" class="btn btn-secondary">Submit</button>
 </form>
 {% endif %}
