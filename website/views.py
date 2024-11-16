@@ -7,6 +7,7 @@ from pathlib import Path
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
+from .models import Code
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,6 +58,11 @@ def home(request):
                         }
                     ],
                 )
+                # Save the code and language to the database
+                code_obj = Code(question=code, code_answer=response.choices[0].message.content.strip(
+                ), language=lang, user=request.user)
+                code_obj.save()
+
                 # Return the response to the user
                 return render(request, 'home.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
             # Exception handling
@@ -110,6 +116,11 @@ def suggest(request):
                         }
                     ],
                 )
+                # Save the code and language to the database
+                code_obj = Code(question=code, code_answer=response.choices[0].message.content.strip(
+                ), language=lang, user=request.user)
+                code_obj.save()
+
                 # return the response to the user
                 return render(request, 'suggest.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
             # exception handling
