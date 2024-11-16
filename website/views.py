@@ -1,5 +1,15 @@
 from django.shortcuts import render
 from django.contrib import messages
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
 
 # Home View - This is the home page
 
@@ -13,7 +23,22 @@ def home(request):
         lang = request.POST['lang']
 
         if lang == 'Select Programming Language':
-            messages.error(request, 'Please select a language')
+            messages.warning(request, 'Please select a language')
             return render(request, 'home.html', {'lang_list': lang_list, 'code': code, 'lang': lang})
-        return render(request, 'home.html', {'lang_list': lang_list, 'code': code, 'lang': lang})
+        else:
+            client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": f"Fix my {lang} code responding only with the fixed code. Code: {code}.",
+                        }
+                    ],
+                )
+                return render(request, 'home.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
+            except Exception as e:
+                return render(request, 'home.html', {'lang_list': lang_list, 'code': e, 'lang': lang})
+
     return render(request, 'home.html', {'lang_list': lang_list})
