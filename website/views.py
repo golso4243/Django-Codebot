@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
 from pathlib import Path
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from .forms import SignUpForm
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -115,3 +118,45 @@ def suggest(request):
 
     # if request method is GET
     return render(request, 'suggest.html', {'lang_list': lang_list})
+
+
+# Login View - This is the login page
+
+
+def login_user(request):
+    # if the request method is POST
+    if request.method == "POST":
+        # get the username and password from the form
+        username = request.POST['username']
+        password = request.POST['password']
+        # authenticate the user
+        user = authenticate(request, username=username, password=password)
+        # if user is not None
+        if user is not None:
+            # login the user
+            login(request, user)
+            # Login Success Message
+            messages.success(request, 'You have been logged in successfully!')
+            # redirect to the home page
+            return redirect('home')
+        else:
+            # Invalid Login Message
+            messages.warning(request, 'Invalid username or password')
+            # redirect to the home page
+            return redirect('home')
+    # if the request method is GET
+    else:
+        # render the home page
+        return render(request, 'home.html')
+
+
+# Logout View - This is the logout page
+
+
+def logout_user(request):
+    # logout the user
+    logout(request)
+    # Logout Success Message
+    messages.success(request, 'You have been logged out successfully!')
+    # redirect to the home page
+    return redirect('home')
