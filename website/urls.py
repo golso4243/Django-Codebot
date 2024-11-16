@@ -3,4 +3,6 @@ from . import views  # Import the views module from the current directory
 
 urlpatterns = [
     path('', views.home, name='home'),  # This is the home page
+    # This is the suggest code page
+    path('suggest/', views.suggest, name='suggest'),
 ]
