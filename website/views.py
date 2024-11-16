@@ -160,3 +160,34 @@ def logout_user(request):
     messages.success(request, 'You have been logged out successfully!')
     # redirect to the home page
     return redirect('home')
+
+
+# Register View - This is the register page
+
+
+def register_user(request):
+    # if the request method is POST
+    if request.method == "POST":
+        # get the form data
+        form = SignUpForm(request.POST)
+        # if the form is valid
+        if form.is_valid():
+            # save the form
+            form.save()
+            # get the cleaned username and password from the form
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            # Registration Success Message
+            messages.success(request, 'You have been registered successfully!')
+            # authenticate the user
+            user = authenticate(request, username=username, password=password)
+            # login the user
+            login(request, user)
+            # redirect to the home page
+            return redirect('home')
+    # if the request method is GET
+    else:
+        # create a new form
+        form = SignUpForm()
+    # render the register page
+    return render(request, 'register.html', {'form': form})
