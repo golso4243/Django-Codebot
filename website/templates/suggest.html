@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% if user.is_authenticated%}
+
 <!-- Check if there is a response to display -->
 {% if response %}
 <pre>
@@ -61,5 +63,25 @@
     <!-- Submit button for the form -->
     <button type="submit" class="btn btn-secondary">Submit</button>
 </form>
+{% endif %}
+
+{% else %}
+
+<div class="col-md-6 offset-md-3">
+    <h1>login</h1>
+    <br />
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="Username">
+            <br />
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password">
+            <br />
+        </div>
+        <button type="submit" class="btn btn-secondary">Login</button>
+    </form>
+</div>
 {% endif %}
 {% endblock %}

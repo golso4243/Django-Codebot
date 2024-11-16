@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+      
       <!-- Brand link -->
       <a class="navbar-brand" href="{% url 'home' %}">A.I. Codebot</a>
+
       <!-- Button for toggling navbar on smaller screens -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,7 +12,9 @@
       <!-- Navbar links -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          
+
+          {% if user.is_authenticated %}
+
           <!-- Home Link (Fix Code)-->
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}">Fix Code</a>
@@ -20,6 +24,25 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'suggest' %}">Suggest Code</a>
           </li>
+
+          <!-- Logout Link -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+
+          {% else %}
+
+          <!-- Register Link -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+
+          <!-- Login Link -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Login</a>
+          </li>
+          {% endif %}
+
         </ul>
       </div>
     </div>
