@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1><strong>Code History</strong></h1><br>
+{% if code %}
+
+{% for code_entry in code %}
+<hr>
+<strong>Question:</strong> {{ code_entry.question }}<br>
+    <strong>Answer:</strong> <br>
+<pre>
+<code class="line-numbers language-{{ code_entry.language }}">
+{{ code_entry.code_answer }}
+</code>
+</pre>
+<strong>Language:</strong> {{ code_entry.language }}<br><br><br>
+
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

@@ -12,4 +12,6 @@ urlpatterns = [
     path("logout/", views.logout_user, name="logout"),
     # This is the register page
     path("register/", views.register_user, name="register"),
+    # This is the history page
+    path('history/', views.history, name='history'),
 ]

@@ -117,8 +117,8 @@ def suggest(request):
                     ],
                 )
                 # Save the code and language to the database
-                code_obj = Code(question=code, code_answer=response.choices[0].message.content.strip(
-                ), language=lang, user=request.user)
+                code_obj = Code(
+                    question=code, code_answer=response.choices[0].message.content, language=lang, user=request.user)
                 code_obj.save()
 
                 # return the response to the user
@@ -202,3 +202,15 @@ def register_user(request):
         form = SignUpForm()
     # render the register page
     return render(request, 'register.html', {'form': form})
+
+
+# History View - This is the history page
+
+
+def history(request):
+    if request.user.is_authenticated:
+        code = Code.objects.all().filter(user_id=request.user.id)
+        return render(request, 'history.html', {'code': code})
+    else:
+        messages.warning(request, 'Please login to view your history')
+        return redirect('home')

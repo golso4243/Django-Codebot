@@ -10,5 +10,5 @@ class Code(models.Model):
     code_answer = models.TextField(max_length=5000)
     language = models.CharField(max_length=50)
 
-    def __call__(self):
-        return self.question
+    # def __call__(self):
+    #     return self.question
