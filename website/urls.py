@@ -14,4 +14,6 @@ urlpatterns = [
     path("register/", views.register_user, name="register"),
     # This is the history page
     path('history/', views.history, name='history'),
+    # Delete History
+    path('delete/<History_id>/', views.delete_history, name='delete_history'),
 ]

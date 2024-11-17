@@ -3,15 +3,15 @@
 {% block content %}
 
 {% if user.is_authenticated%}
-<h1><strong>Suggest Code</strong></h1>
+<h1><strong>Suggest Code</strong></h1><br>
 <!-- Check if there is a response to display -->
 {% if response %}
 <pre>
-    <!-- Display the response with syntax highlighting -->
-    <code class="line-numbers language-{{lang}}">
-    {{ response }}
+<!-- Display the response with syntax highlighting -->
+<code class="line-numbers language-{{lang}}">
+{{ response }}
 
-    </code>
+</code>
 </pre>
 <br /><br />
 

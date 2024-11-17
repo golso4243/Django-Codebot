@@ -214,3 +214,13 @@ def history(request):
     else:
         messages.warning(request, 'Please login to view your history')
         return redirect('home')
+
+
+# Delete History View - This is the delete history page
+
+
+def delete_history(request, History_id):
+    history = Code.objects.get(pk=History_id)
+    history.delete()
+    messages.success(request, 'Code deleted successfully!')
+    return redirect('history')

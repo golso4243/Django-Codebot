@@ -6,14 +6,15 @@
 
 {% for code_entry in code %}
 <hr>
-<strong>Question:</strong> {{ code_entry.question }}<br>
-    <strong>Answer:</strong> <br>
+<strong>Prompt:</strong> {{ code_entry.question }}<br>
+<strong>Language:</strong> {{ code_entry.language }}<br>
+<strong>Answer:</strong> <br>
 <pre>
 <code class="line-numbers language-{{ code_entry.language }}">
 {{ code_entry.code_answer }}
 </code>
 </pre>
-<strong>Language:</strong> {{ code_entry.language }}<br><br><br>
+<a href="{% url 'delete_history' code_entry.id %}" class="btn btn-outline-secondary btn-sm">Delete</a><br><br><br>
 
 {% endfor %}
 
