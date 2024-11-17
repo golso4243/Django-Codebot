@@ -9,6 +9,7 @@ class Code(models.Model):
     question = models.TextField(max_length=5000)
     code_answer = models.TextField(max_length=5000)
     language = models.CharField(max_length=50)
+    source_page = models.CharField(max_length=10, default='suggest')
 
     # def __call__(self):
     #     return self.question

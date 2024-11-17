@@ -60,7 +60,8 @@ def home(request):
                 )
                 # Save the code and language to the database
                 code_obj = Code(question=code, code_answer=response.choices[0].message.content.strip(
-                ), language=lang, user=request.user)
+                ), language=lang, user=request.user,
+                    source_page='fix')
                 code_obj.save()
 
                 # Return the response to the user
@@ -118,7 +119,7 @@ def suggest(request):
                 )
                 # Save the code and language to the database
                 code_obj = Code(
-                    question=code, code_answer=response.choices[0].message.content, language=lang, user=request.user)
+                    question=code, code_answer=response.choices[0].message.content, language=lang, user=request.user, source_page='suggest')
                 code_obj.save()
 
                 # return the response to the user

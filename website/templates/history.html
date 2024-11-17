@@ -6,15 +6,35 @@
 
 {% for code_entry in code %}
 <hr>
-<strong>Prompt:</strong> {{ code_entry.question }}<br>
-<strong>Language:</strong> {{ code_entry.language }}<br>
-<strong>Answer:</strong> <br>
+<strong>Prompt:</strong> 
+
+{% if code_entry.source_page == 'fix' %} Fix my {{ code_entry.language }} Code.<br>
+<pre>
+<code class="line-numbers language-{{ code_entry.language }}">
+{{ code_entry.question}}
+</code>
+</pre>
+
+<strong>Fixed Code:</strong><br>
 <pre>
 <code class="line-numbers language-{{ code_entry.language }}">
 {{ code_entry.code_answer }}
 </code>
 </pre>
 <a href="{% url 'delete_history' code_entry.id %}" class="btn btn-outline-secondary btn-sm">Delete</a><br><br><br>
+
+{% elif code_entry.source_page == 'suggest' %}
+
+{{ code_entry.question}}<br>
+<strong>Language:</strong> {{ code_entry.language }}<br>
+<pre>
+<code class="line-numbers language-{{ code_entry.language }}">
+{{ code_entry.code_answer }}
+</code>
+</pre>
+<a href="{% url 'delete_history' code_entry.id %}" class="btn btn-outline-secondary btn-sm">Delete</a><br><br><br>
+{% endif %}
+
 
 {% endfor %}
 
