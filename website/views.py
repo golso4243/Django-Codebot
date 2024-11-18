@@ -64,7 +64,8 @@ def home(request):
                     source_page='fix')
                 code_obj.save()
 
-                # Return the response to the user
+                # Return the response to the user with success message
+                messages.success(request, 'Code fixed successfully!')
                 return render(request, 'home.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
             # Exception handling
             except Exception as e:
@@ -122,7 +123,8 @@ def suggest(request):
                     question=code, code_answer=response.choices[0].message.content, language=lang, user=request.user, source_page='suggest')
                 code_obj.save()
 
-                # return the response to the user
+                # return the response to the user and success message
+                messages.success(request, 'Code suggested successfully!')
                 return render(request, 'suggest.html', {'lang_list': lang_list, 'response': response.choices[0].message.content.strip(), 'lang': lang})
             # exception handling
             except Exception as e:
